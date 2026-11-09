@@ -127,23 +127,23 @@ export function Navbar() {
 
       {/* Main Navigation Bar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-14">
+        <div className="flex items-center justify-between h-16">
           {/* Logo & Hardware Status */}
           <div className="flex items-center gap-3">
             <Link
               href={isInAdminPortal ? '/admin' : '/dashboard'}
-              className="flex items-center gap-2.5 group"
+              className="flex items-center gap-3 group"
             >
               <div className="relative">
                 <div
-                  className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all ${
+                  className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all ${
                     isInAdminPortal
-                      ? 'bg-purple-500/20 text-purple-300 border border-purple-500/40'
+                      ? 'bg-purple-500/20 text-purple-300 border border-purple-500/40 shadow-sm shadow-purple-500/10'
                       : !devicePoweredOn
                       ? 'bg-slate-800 text-slate-500'
                       : currentMode === 'ALERT'
                       ? 'bg-red-500/20 text-red-400 border border-red-500/40 animate-red-alert'
-                      : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40'
+                      : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 shadow-sm shadow-emerald-500/10'
                   }`}
                 >
                   {isInAdminPortal ? <Building2 className="w-4 h-4" /> : <Cpu className="w-4 h-4" />}
@@ -159,8 +159,10 @@ export function Navbar() {
                 )}
               </div>
               <div className="flex flex-col">
-                <span className="font-semibold text-slate-100 text-sm tracking-tight flex items-center gap-1.5">
-                  {isInAdminPortal ? 'HR & Wellness Hub' : 'Desk Hub Companion'}
+                <div className="flex items-center gap-1.5">
+                  <span className="font-semibold text-slate-100 text-sm tracking-tight">
+                    {isInAdminPortal ? 'HR & Wellness Hub' : 'Desk Hub Companion'}
+                  </span>
                   <span
                     className={`text-[9px] font-mono uppercase px-1.5 py-0.5 rounded border ${
                       isInAdminPortal
@@ -168,20 +170,20 @@ export function Navbar() {
                         : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
                     }`}
                   >
-                    {isInAdminPortal ? 'Admin Portal' : 'v2.4 IoT'}
+                    {isInAdminPortal ? 'Admin' : 'v2.4 IoT'}
                   </span>
-                </span>
+                </div>
                 <span className="text-[10px] text-slate-400 font-mono">
                   {isInAdminPortal
-                    ? 'Occupational Sedentary Oversight'
+                    ? 'Occupational Oversight'
                     : `${devicePoweredOn ? currentMode : 'OFF'} • ${connectionStatus.toUpperCase()}`}
                 </span>
               </div>
             </Link>
           </div>
 
-          {/* Navigation Links (Switches between User Portal and Admin Portal items) */}
-          <nav className="hidden md:flex items-center gap-1">
+          {/* Navigation Links */}
+          <nav className="hidden md:flex items-center gap-1.5">
             {(isInAdminPortal ? adminNavItems : userNavItems).map((item) => {
               const Icon = item.icon;
               const isActive =
@@ -192,68 +194,68 @@ export function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 ${
+                  className={`px-3 py-2 rounded-xl text-xs font-medium transition-all flex items-center gap-2 ${
                     isActive
                       ? isInAdminPortal
-                        ? 'bg-purple-500/20 text-purple-300 border border-purple-500/40 shadow-xs'
-                        : 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 shadow-xs'
+                        ? 'bg-purple-500/20 text-purple-200 border border-purple-500/40 shadow-sm font-semibold'
+                        : 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 shadow-sm font-semibold'
                       : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
                   }`}
                 >
                   <Icon className="w-3.5 h-3.5" />
-                  {item.label}
+                  <span>{item.label}</span>
                 </Link>
               );
             })}
           </nav>
 
           {/* Right Action Widgets */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5">
             {/* Quick Audio Mute Toggle */}
             <button
               onClick={toggleSound}
               title={soundEnabled ? 'Buzzer Sound Active (Click to Mute)' : 'Buzzer Muted (Click to Unmute)'}
-              className={`p-2 rounded-lg border transition-all ${
+              className={`p-2 rounded-xl border transition-all ${
                 soundEnabled
-                  ? 'bg-slate-800/80 text-emerald-400 border-slate-700 hover:border-emerald-500/50'
+                  ? 'bg-slate-800/80 text-emerald-400 border-slate-700/80 hover:border-emerald-500/50 hover:bg-slate-800'
                   : 'bg-red-500/10 text-red-400 border-red-500/20 hover:bg-red-500/20'
               }`}
             >
-              {soundEnabled ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
+              {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
             </button>
 
             {/* Hardware Link Status */}
             <button
               onClick={toggleConnection}
               title={`Hardware Link: ${connectionStatus}`}
-              className={`px-2 py-1 rounded-lg border text-xs font-mono flex items-center gap-1.5 transition-all ${
+              className={`px-2.5 py-1.5 rounded-xl border text-xs font-mono flex items-center gap-2 transition-all ${
                 connectionStatus === 'connected'
-                  ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
+                  ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/15'
                   : connectionStatus === 'simulated'
-                  ? 'bg-sky-500/10 text-sky-400 border-sky-500/30'
-                  : 'bg-red-500/10 text-red-400 border-red-500/30'
+                  ? 'bg-sky-500/10 text-sky-400 border-sky-500/30 hover:bg-sky-500/15'
+                  : 'bg-red-500/10 text-red-400 border-red-500/30 hover:bg-red-500/15'
               }`}
             >
-              <Radio className="w-3 h-3 animate-pulse" />
-              <span className="hidden lg:inline capitalize text-[11px]">{connectionStatus}</span>
+              <Radio className="w-3.5 h-3.5 animate-pulse" />
+              <span className="hidden xl:inline capitalize text-[11px] font-medium">{connectionStatus}</span>
             </button>
 
             {/* User Profile & Role Switcher */}
             <div className="relative">
               <button
                 onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                className="flex items-center gap-2 pl-2 pr-2.5 py-1 rounded-lg bg-calm-card border border-calm-border hover:border-slate-600 transition-all text-xs"
+                className="flex items-center gap-2 pl-1.5 pr-2.5 py-1 rounded-xl bg-calm-card/90 border border-calm-border hover:border-slate-600 transition-all text-xs"
               >
                 <img
                   src={user.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'}
                   alt={user.display_name}
-                  className="w-6 h-6 rounded-full object-cover border border-slate-600"
+                  className="w-7 h-7 rounded-lg object-cover border border-slate-700"
                 />
-                <span className="hidden sm:inline text-slate-200 max-w-[110px] truncate font-medium text-[11px]">
+                <span className="hidden sm:inline text-slate-200 max-w-[140px] lg:max-w-[180px] truncate font-medium text-xs">
                   {user.display_name}
                 </span>
                 <span
-                  className={`text-[9px] font-mono px-1.5 py-0.5 rounded uppercase ${
+                  className={`text-[9px] font-mono px-1.5 py-0.5 rounded uppercase font-semibold ${
                     user.role === 'admin'
                       ? 'bg-purple-500/25 text-purple-300 border border-purple-500/30'
                       : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
@@ -261,7 +263,7 @@ export function Navbar() {
                 >
                   {user.role}
                 </span>
-                <ChevronDown className="w-3 h-3 text-slate-400" />
+                <ChevronDown className="w-3.5 h-3.5 text-slate-400 ml-0.5" />
               </button>
 
               {userDropdownOpen && (

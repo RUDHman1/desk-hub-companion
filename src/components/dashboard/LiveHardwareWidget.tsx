@@ -56,24 +56,24 @@ export function LiveHardwareWidget() {
   const activeTone = getAudioTone(audioPreference);
 
   return (
-    <div className="bg-calm-surface border border-calm-border rounded-2xl p-6 shadow-xl relative overflow-hidden flex flex-col justify-between">
+    <div className="bg-calm-surface border border-calm-border rounded-2xl p-5 sm:p-6 shadow-xl relative overflow-hidden flex flex-col justify-between flex-1">
       {/* Top Bar: Connection & Ambient Mode */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-calm-border/60 pb-4 mb-4 gap-3">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-slate-900 border border-slate-700 flex items-center justify-center text-slate-300">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-slate-900 border border-slate-700/80 flex items-center justify-center text-slate-300 shadow-sm">
             <Cpu className="w-4 h-4 text-emerald-400" />
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-slate-100 tracking-tight flex items-center gap-1.5">
+            <h3 className="text-sm font-semibold text-slate-100 tracking-tight flex items-center gap-2">
               Arduino Desk Hub
-              <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-slate-800 text-slate-400 border border-slate-700">
+              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">
                 ESP32-S3 / Uno R4
               </span>
             </h3>
 
             {/* Smart Connection Status: Physical vs Simulated */}
             <div className="text-[11px] text-slate-400 font-mono flex items-center gap-2 mt-0.5">
-              <span className="flex items-center gap-1">
+              <span className="flex items-center gap-1.5">
                 <span
                   className={`w-1.5 h-1.5 rounded-full ${
                     connectionStatus === 'connected'
@@ -99,7 +99,7 @@ export function LiveHardwareWidget() {
                     switchToHardwareMode();
                     await connectHardware();
                   }}
-                  className="text-[10px] text-emerald-400 hover:text-emerald-300 hover:underline flex items-center gap-1 font-sans"
+                  className="text-[10px] text-emerald-400 hover:text-emerald-300 hover:underline flex items-center gap-1 font-sans font-medium"
                 >
                   <Usb className="w-3 h-3" />
                   <span>Connect Hardware</span>
@@ -164,10 +164,10 @@ export function LiveHardwareWidget() {
       </div>
 
       {/* Main Device Chassis Simulation */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-center my-2">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-stretch my-1">
         {/* Physical LED Ring Indicator (5 Cols) */}
-        <div className="md:col-span-5 flex flex-col items-center justify-center p-4 rounded-xl bg-slate-950/60 border border-slate-800/80">
-          <div className="relative w-36 h-36 flex items-center justify-center">
+        <div className="md:col-span-5 flex flex-col items-center justify-between p-4 rounded-2xl bg-slate-950/70 border border-slate-800/80 shadow-inner">
+          <div className="relative w-36 h-36 my-auto flex items-center justify-center">
             {/* Ambient Backlight Glow */}
             <div
               className={`absolute inset-0 rounded-full blur-xl transition-all duration-700 ${
@@ -210,41 +210,46 @@ export function LiveHardwareWidget() {
               <span className="text-2xl font-mono font-bold tracking-tight text-slate-100">
                 {devicePoweredOn ? timeFormatted : '--:--'}
               </span>
-              <span className="text-[10px] font-mono uppercase text-slate-400">
+              <span className="text-[10px] font-mono uppercase text-slate-400 mt-0.5">
                 {currentMode === 'ALERT' ? 'BREAK OVERDUE' : 'SITTING TIMER'}
               </span>
             </div>
           </div>
 
-          <p className="text-[11px] font-mono text-slate-400 mt-2 text-center">
-            {currentMode === 'ALERT' ? (
-              <span className="text-red-400 font-semibold">🔴 Chromatic Strobe Active</span>
-            ) : (
-              <span className="text-emerald-400 font-medium">🟢 Calm Green Constant Pulse</span>
-            )}
-          </p>
+          <div className="mt-3 pt-2 border-t border-slate-800/60 w-full text-center">
+            <span
+              className={`inline-flex items-center gap-1.5 text-[11px] font-mono px-2.5 py-1 rounded-full border ${
+                currentMode === 'ALERT'
+                  ? 'bg-red-500/10 text-red-400 border-red-500/30 font-semibold'
+                  : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 font-medium'
+              }`}
+            >
+              <span className={`w-1.5 h-1.5 rounded-full ${currentMode === 'ALERT' ? 'bg-red-400 animate-ping' : 'bg-emerald-400'}`} />
+              {currentMode === 'ALERT' ? 'Chromatic Red Alert' : 'Calm Green Constant Pulse'}
+            </span>
+          </div>
         </div>
 
         {/* OLED Ticker Display & Audio Status (7 Cols) */}
-        <div className="md:col-span-7 flex flex-col justify-between h-full space-y-4">
+        <div className="md:col-span-7 flex flex-col justify-between gap-3">
           {/* Simulated SSD1306 0.96" OLED Display */}
-          <div className="rounded-xl border border-sky-900/60 bg-slate-950 p-3 shadow-inner relative overflow-hidden font-mono">
-            <div className="flex items-center justify-between text-[10px] text-sky-400/80 border-b border-sky-900/40 pb-1.5 mb-2">
-              <span className="flex items-center gap-1">
+          <div className="rounded-2xl border border-sky-900/60 bg-slate-950 p-3.5 shadow-inner relative overflow-hidden font-mono flex-1 flex flex-col justify-between">
+            <div className="flex items-center justify-between text-[10px] text-sky-400/80 border-b border-sky-900/40 pb-2 mb-2">
+              <span className="flex items-center gap-1.5 font-medium">
                 <span className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse" />
                 SSD1306 128x64 OLED
               </span>
-              <span>I2C 0x3C</span>
+              <span className="text-sky-500 font-mono">I2C 0x3C</span>
             </div>
 
             {/* OLED Ticker Content */}
-            <div className="h-14 flex flex-col justify-center text-sky-300 overflow-hidden">
-              <div className="relative w-full overflow-hidden">
+            <div className="my-auto py-2 flex flex-col justify-center text-sky-300 overflow-hidden">
+              <div className="relative w-full overflow-hidden py-1">
                 <p className="text-xs uppercase tracking-wider font-semibold whitespace-nowrap inline-block animate-ticker">
                   {tickerText}
                 </p>
               </div>
-              <div className="flex items-center justify-between text-[11px] text-sky-400/70 mt-1.5 font-mono">
+              <div className="flex items-center justify-between text-[11px] text-sky-400/70 mt-2 font-mono border-t border-sky-900/30 pt-1.5">
                 <span>MODE: {currentMode}</span>
                 <span>
                   {minutes}m {seconds}s REMAINING
@@ -254,11 +259,11 @@ export function LiveHardwareWidget() {
           </div>
 
           {/* Alert Latency & Sound Audio Bar */}
-          <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-xs flex items-center justify-between">
-            <div className="flex items-center gap-2 overflow-hidden">
+          <div className="px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-800 text-xs flex items-center justify-between gap-2 shadow-sm">
+            <div className="flex items-center gap-2 overflow-hidden min-w-0">
               <span className="text-[11px] font-mono text-slate-400 flex-shrink-0">Tone:</span>
               <span
-                className={`text-[11px] font-mono px-2 py-0.5 rounded truncate ${
+                className={`text-[11px] font-mono px-2 py-0.5 rounded truncate font-medium ${
                   soundEnabled
                     ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
                     : 'bg-red-500/10 text-red-400 border border-red-500/20'
@@ -272,7 +277,7 @@ export function LiveHardwareWidget() {
             <div className="flex items-center gap-1.5 flex-shrink-0">
               <button
                 onClick={playFanfarePreview}
-                className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-[10px] font-mono transition-all flex items-center gap-1"
+                className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-[10px] font-mono transition-all flex items-center gap-1.5 border border-slate-700/80 active:scale-95"
                 title="Preview Tone"
               >
                 <Play className="w-3 h-3 text-emerald-400" />
@@ -281,7 +286,7 @@ export function LiveHardwareWidget() {
               {activeNoteIndex !== null && (
                 <button
                   onClick={stopAudio}
-                  className="px-2 py-1 rounded bg-red-500/20 text-red-300 text-[10px] font-mono"
+                  className="px-2 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 text-red-300 text-[10px] font-mono transition-all border border-red-500/30"
                 >
                   <Square className="w-3 h-3" />
                 </button>
@@ -291,10 +296,10 @@ export function LiveHardwareWidget() {
 
           {/* Response Latency Metric if recently recorded */}
           {lastResponseLatencySec !== null && (
-            <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-between text-xs">
+            <div className="px-3 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-between text-xs">
               <span className="text-slate-400 flex items-center gap-1.5">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                Last Alert Response Latency:
+                Last Response Latency:
               </span>
               <span className="font-mono font-semibold text-emerald-300">
                 {lastResponseLatencySec} seconds
@@ -305,12 +310,12 @@ export function LiveHardwareWidget() {
       </div>
 
       {/* Level 1: Dedicated Quick Actions Bar */}
-      <div className="mt-4 pt-4 border-t border-calm-border/60">
+      <div className="mt-4 pt-3.5 border-t border-calm-border/60">
         <div className="flex items-center justify-between text-xs text-slate-400 mb-2">
-          <span className="font-mono text-[11px] uppercase tracking-wider text-slate-300">
+          <span className="font-mono text-[11px] uppercase tracking-wider text-slate-300 font-medium">
             Quick Actions
           </span>
-          <span className="text-[10px] text-slate-500">1-Click Remote & Physical Emulation</span>
+          <span className="text-[10px] text-slate-500 font-mono">1-Click Remote & Physical Emulation</span>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
@@ -318,26 +323,30 @@ export function LiveHardwareWidget() {
           <button
             onClick={() => snoozeHub(5)}
             disabled={!devicePoweredOn}
-            className="p-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-800 border border-slate-700/80 hover:border-amber-500/40 text-slate-200 text-xs font-medium flex items-center gap-2 transition-all active:scale-95 disabled:opacity-40"
+            className="h-[58px] px-3 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 hover:border-amber-500/40 text-slate-200 text-xs font-medium flex items-center gap-2.5 transition-all active:scale-95 disabled:opacity-40 shadow-sm"
             title="Postpone sitting alert by 5 minutes"
           >
-            <AlarmClockOff className="w-4 h-4 text-amber-400 flex-shrink-0" />
-            <div className="text-left">
-              <span className="block font-semibold text-slate-200 text-xs">Snooze Hub</span>
-              <span className="block text-[10px] text-slate-400 font-mono">+5 Minutes</span>
+            <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
+              <AlarmClockOff className="w-4 h-4 text-amber-400" />
+            </div>
+            <div className="text-left min-w-0 flex-1">
+              <span className="block font-semibold text-slate-200 text-xs truncate">Snooze Hub</span>
+              <span className="block text-[10px] text-slate-400 font-mono truncate">+5 Minutes</span>
             </div>
           </button>
 
           {/* Quick Action 2: Start Guided Microbreak */}
           <Link
             href="/microbreaks"
-            className="p-2.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-emerald-200 text-xs font-medium flex items-center gap-2 transition-all active:scale-95"
+            className="h-[58px] px-3 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-emerald-200 text-xs font-medium flex items-center gap-2.5 transition-all active:scale-95 shadow-sm"
             title="Launch 2-minute evidence-based movement break"
           >
-            <Sparkles className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-            <div className="text-left">
-              <span className="block font-semibold text-emerald-300 text-xs">Start Microbreak</span>
-              <span className="block text-[10px] text-emerald-400/80 font-mono">2-Min Guided</span>
+            <div className="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center shrink-0">
+              <Sparkles className="w-4 h-4 text-emerald-300" />
+            </div>
+            <div className="text-left min-w-0 flex-1">
+              <span className="block font-semibold text-emerald-300 text-xs truncate">Start Microbreak</span>
+              <span className="block text-[10px] text-emerald-400/80 font-mono truncate">2-Min Guided</span>
             </div>
           </Link>
 
@@ -345,23 +354,31 @@ export function LiveHardwareWidget() {
           <button
             onClick={() => simulateIrCommand('IR_CMD_MUTE')}
             disabled={!devicePoweredOn}
-            className={`p-2.5 rounded-xl border text-xs font-medium flex items-center gap-2 transition-all active:scale-95 disabled:opacity-40 ${
+            className={`h-[58px] px-3 rounded-xl border text-xs font-medium flex items-center gap-2.5 transition-all active:scale-95 disabled:opacity-40 shadow-sm ${
               soundEnabled
-                ? 'bg-slate-800/90 hover:bg-slate-800 border-slate-700/80 text-slate-200'
-                : 'bg-red-500/15 border-red-500/40 text-red-300'
+                ? 'bg-slate-900/90 hover:bg-slate-800 border-slate-700/80 text-slate-200'
+                : 'bg-red-500/15 hover:bg-red-500/25 border-red-500/40 text-red-300'
             }`}
             title="Toggle buzzer audio"
           >
-            {soundEnabled ? (
-              <Volume2 className="w-4 h-4 text-sky-400 flex-shrink-0" />
-            ) : (
-              <VolumeX className="w-4 h-4 text-red-400 flex-shrink-0" />
-            )}
-            <div className="text-left">
-              <span className="block font-semibold text-xs">
+            <div
+              className={`w-8 h-8 rounded-lg border flex items-center justify-center shrink-0 ${
+                soundEnabled
+                  ? 'bg-sky-500/10 border-sky-500/20'
+                  : 'bg-red-500/20 border-red-500/30'
+              }`}
+            >
+              {soundEnabled ? (
+                <Volume2 className="w-4 h-4 text-sky-400" />
+              ) : (
+                <VolumeX className="w-4 h-4 text-red-400" />
+              )}
+            </div>
+            <div className="text-left min-w-0 flex-1">
+              <span className="block font-semibold text-xs truncate">
                 {soundEnabled ? 'Mute Hub' : 'Unmute Hub'}
               </span>
-              <span className="block text-[10px] text-slate-400 font-mono">
+              <span className="block text-[10px] text-slate-400 font-mono truncate">
                 {soundEnabled ? 'Piezo Active' : 'Silent Mode'}
               </span>
             </div>
@@ -371,13 +388,15 @@ export function LiveHardwareWidget() {
           <button
             onClick={() => simulateIrCommand('IR_CMD_RESET')}
             disabled={!devicePoweredOn}
-            className="p-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-800 border border-slate-700/80 hover:border-emerald-500/40 text-slate-200 text-xs font-medium flex items-center gap-2 transition-all active:scale-95 disabled:opacity-40"
+            className="h-[58px] px-3 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 hover:border-emerald-500/40 text-slate-200 text-xs font-medium flex items-center gap-2.5 transition-all active:scale-95 disabled:opacity-40 shadow-sm"
             title="Reset timer to full interval (IR_CMD_RESET)"
           >
-            <RotateCcw className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-            <div className="text-left">
-              <span className="block font-semibold text-slate-200 text-xs">Reset Timer</span>
-              <span className="block text-[10px] text-slate-400 font-mono">
+            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
+              <RotateCcw className="w-4 h-4 text-emerald-400" />
+            </div>
+            <div className="text-left min-w-0 flex-1">
+              <span className="block font-semibold text-slate-200 text-xs truncate">Reset Timer</span>
+              <span className="block text-[10px] text-slate-400 font-mono truncate">
                 {totalIntervalSeconds / 60}m Interval
               </span>
             </div>
