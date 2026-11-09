@@ -101,7 +101,7 @@ export function SedentaryTimeLoop({
         {/* Circular Progress Ring (4 cols) */}
         <div className="md:col-span-4 flex flex-col items-center justify-center p-4 rounded-xl bg-slate-950/50 border border-slate-800">
           <div className="relative w-32 h-32 flex items-center justify-center">
-            <svg className="w-full h-full transform -rotate-90">
+            <svg viewBox="0 0 128 128" className="w-full h-full transform -rotate-90">
               <circle
                 cx="64"
                 cy="64"

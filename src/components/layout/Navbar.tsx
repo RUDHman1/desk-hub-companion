@@ -24,6 +24,8 @@ import {
   Trophy,
   Download,
   CheckCircle2,
+  Menu,
+  X,
 } from 'lucide-react';
 
 export function Navbar() {
@@ -39,6 +41,7 @@ export function Navbar() {
   } = useDevice();
 
   const [userDropdownOpen, setUserDropdownOpen] = React.useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
   // Check if current route is in the Admin HR / Wellness Portal
   const isInAdminPortal = pathname.startsWith('/admin');
@@ -159,7 +162,7 @@ export function Navbar() {
                 <span className="font-semibold text-slate-100 text-sm tracking-tight flex items-center gap-1.5">
                   {isInAdminPortal ? 'HR & Wellness Hub' : 'Desk Hub Companion'}
                   <span
-                    className={`text-[9px] font-mono uppercase px-1.5 py-0.2 rounded border ${
+                    className={`text-[9px] font-mono uppercase px-1.5 py-0.5 rounded border ${
                       isInAdminPortal
                         ? 'bg-purple-500/20 text-purple-300 border-purple-500/30'
                         : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
@@ -250,7 +253,7 @@ export function Navbar() {
                   {user.display_name}
                 </span>
                 <span
-                  className={`text-[9px] font-mono px-1.5 py-0.2 rounded uppercase ${
+                  className={`text-[9px] font-mono px-1.5 py-0.5 rounded uppercase ${
                     user.role === 'admin'
                       ? 'bg-purple-500/25 text-purple-300 border border-purple-500/30'
                       : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
@@ -327,9 +330,52 @@ export function Navbar() {
                 </>
               )}
             </div>
+            {/* Mobile Navigation Hamburger Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 rounded-lg bg-slate-900 border border-calm-border text-slate-300 hover:text-slate-100 transition-colors"
+              aria-label="Toggle navigation menu"
+            >
+              {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Responsive Mobile Drawer */}
+      {mobileMenuOpen && (
+        <div className="md:hidden border-t border-calm-border/80 bg-slate-950/95 px-4 pt-3 pb-5 space-y-2 backdrop-blur-lg">
+          <p className="text-[10px] font-mono uppercase tracking-wider text-slate-500 px-2 pt-1 pb-1">
+            {isInAdminPortal ? 'HR & Wellness Admin Navigation' : 'Employee Portal Navigation'}
+          </p>
+          <div className="grid grid-cols-1 gap-1.5">
+            {(isInAdminPortal ? adminNavItems : userNavItems).map((item) => {
+              const Icon = item.icon;
+              const isActive =
+                item.href === '/admin'
+                  ? pathname === '/admin'
+                  : pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`px-3 py-2.5 rounded-xl text-xs font-medium transition-all flex items-center gap-2.5 ${
+                    isActive
+                      ? isInAdminPortal
+                        ? 'bg-purple-500/20 text-purple-300 border border-purple-500/40 font-semibold'
+                        : 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-semibold'
+                      : 'text-slate-300 hover:bg-slate-900 hover:text-slate-100'
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span>{item.label}</span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </header>
   );
 }

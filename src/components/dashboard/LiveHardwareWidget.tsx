@@ -183,7 +183,8 @@ export function LiveHardwareWidget() {
             <div className="absolute inset-0 rounded-full border-2 border-slate-800 flex items-center justify-center">
               {[...Array(12)].map((_, idx) => {
                 const angle = (idx / 12) * 360;
-                const isLit = devicePoweredOn && idx <= Math.floor((progressPercent / 100) * 12);
+                const litCount = Math.floor((progressPercent / 100) * 12);
+                const isLit = devicePoweredOn && idx < litCount;
                 return (
                   <span
                     key={idx}
@@ -197,7 +198,7 @@ export function LiveHardwareWidget() {
                         ? 'bg-red-500 shadow-lg shadow-red-500 animate-ping'
                         : isLit
                         ? 'bg-emerald-400 shadow-md shadow-emerald-400'
-                        : 'bg-emerald-950 border border-emerald-800/40'
+                        : 'bg-emerald-950/60 border border-emerald-900/40'
                     }`}
                   />
                 );
@@ -237,11 +238,13 @@ export function LiveHardwareWidget() {
             </div>
 
             {/* OLED Ticker Content */}
-            <div className="h-14 flex flex-col justify-center text-sky-300">
-              <p className="text-xs uppercase tracking-wider font-semibold truncate animate-marquee">
-                {tickerText}
-              </p>
-              <div className="flex items-center justify-between text-[11px] text-sky-400/70 mt-1.5">
+            <div className="h-14 flex flex-col justify-center text-sky-300 overflow-hidden">
+              <div className="relative w-full overflow-hidden">
+                <p className="text-xs uppercase tracking-wider font-semibold whitespace-nowrap inline-block animate-ticker">
+                  {tickerText}
+                </p>
+              </div>
+              <div className="flex items-center justify-between text-[11px] text-sky-400/70 mt-1.5 font-mono">
                 <span>MODE: {currentMode}</span>
                 <span>
                   {minutes}m {seconds}s REMAINING

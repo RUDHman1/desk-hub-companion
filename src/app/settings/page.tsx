@@ -250,9 +250,47 @@ export default function SettingsPage() {
               chromatic red ALERT mode. Clinical guidelines recommend 20 to 30 minutes.
             </p>
 
-            {/* Slider with exact 1:1 discrete alignment to presets */}
-            <div className="space-y-4 px-1">
-              <div className="relative pt-1">
+            {/* Pixel-Perfect Discrete Stepped Slider with Direct Notch Alignment */}
+            <div className="space-y-6 pt-2">
+              <div className="relative select-none py-4">
+                {/* Background Track */}
+                <div className="w-full h-2.5 bg-slate-900 border border-slate-800 rounded-full relative overflow-visible">
+                  {/* Active Filled Progress Bar */}
+                  <div
+                    className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full transition-all duration-200 shadow-sm shadow-emerald-500/50"
+                    style={{ width: `${sliderIndex * 33.333}%` }}
+                  />
+
+                  {/* 4 Discrete Snap Notches */}
+                  {INTERVAL_PRESETS.map((preset, idx) => {
+                    const isSelected = alertInterval === preset.value;
+                    const isPassed = sliderIndex >= idx;
+                    const percentPos = idx * 33.333;
+
+                    return (
+                      <button
+                        key={preset.value}
+                        type="button"
+                        onClick={() => setAlertInterval(preset.value)}
+                        style={{ left: `${percentPos}%` }}
+                        className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-5 h-5 rounded-full flex items-center justify-center transition-all cursor-pointer group focus:outline-none"
+                        title={`Set to ${preset.value} minutes`}
+                      >
+                        <span
+                          className={`rounded-full transition-all duration-200 ${
+                            isSelected
+                              ? 'w-4 h-4 bg-emerald-400 ring-4 ring-emerald-500/30 shadow-md shadow-emerald-400'
+                              : isPassed
+                              ? 'w-3 h-3 bg-emerald-500 group-hover:scale-125'
+                              : 'w-2.5 h-2.5 bg-slate-700 group-hover:bg-slate-500'
+                          }`}
+                        />
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Invisible input range for keyboard accessibility and smooth dragging */}
                 <input
                   type="range"
                   min={0}
@@ -263,37 +301,36 @@ export default function SettingsPage() {
                     const idx = Number(e.target.value);
                     setAlertInterval(INTERVAL_PRESETS[idx].value);
                   }}
-                  className="w-full accent-emerald-500 cursor-pointer h-2 bg-slate-800 rounded-lg appearance-none"
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                  aria-label="Sitting Interval Slider"
                 />
 
-                {/* Exactly aligned label stops directly beneath the 4 slider steps */}
-                <div className="flex justify-between items-start mt-3">
+                {/* Exactly Aligned Label Columns Directly Under Notches */}
+                <div className="relative w-full h-12 mt-4">
                   {INTERVAL_PRESETS.map((preset, idx) => {
                     const isSelected = alertInterval === preset.value;
+                    const percentPos = idx * 33.333;
+
                     return (
                       <button
                         key={preset.value}
                         type="button"
                         onClick={() => setAlertInterval(preset.value)}
-                        className={`text-center flex flex-col items-center group transition-all ${
-                          isSelected ? 'text-emerald-400 font-bold' : 'text-slate-400 hover:text-slate-300'
-                        }`}
                         style={{
-                          width: '76px',
-                          // Micro-adjustment for outer margins so first and last hug edges
+                          left: `${percentPos}%`,
+                          transform: idx === 0 ? 'none' : idx === 3 ? 'translateX(-100%)' : 'translateX(-50%)',
                           textAlign: idx === 0 ? 'left' : idx === 3 ? 'right' : 'center',
-                          alignItems: idx === 0 ? 'flex-start' : idx === 3 ? 'flex-end' : 'center',
                         }}
+                        className={`absolute top-0 flex flex-col group transition-all cursor-pointer focus:outline-none ${
+                          isSelected ? 'text-emerald-300 font-bold' : 'text-slate-400 hover:text-slate-200'
+                        }`}
                       >
-                        <div
-                          className={`w-2 h-2 rounded-full mb-1 transition-all ${
-                            isSelected
-                              ? 'bg-emerald-400 ring-4 ring-emerald-500/20'
-                              : 'bg-slate-700 group-hover:bg-slate-500'
+                        <span className="text-xs font-mono font-semibold tracking-tight">{preset.name}</span>
+                        <span
+                          className={`text-[10px] whitespace-nowrap mt-0.5 ${
+                            isSelected ? 'text-emerald-400 font-medium' : 'text-slate-500 group-hover:text-slate-400'
                           }`}
-                        />
-                        <span className="text-[11px] font-mono leading-tight">{preset.name}</span>
-                        <span className="text-[10px] text-slate-400 leading-tight whitespace-nowrap">
+                        >
                           ({preset.desc})
                         </span>
                       </button>
@@ -570,20 +607,27 @@ export default function SettingsPage() {
                       e.stopPropagation();
                       handlePlayPreview(tone.id);
                     }}
-                    className={`px-2.5 py-1 rounded-lg text-xs font-mono flex items-center gap-1.5 transition-all ${
+                    className={`px-3 py-1.5 rounded-lg text-xs font-mono flex items-center gap-2 transition-all ${
                       isPlayingThis
-                        ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                        ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm'
                         : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700/70'
                     }`}
                   >
                     {isPlayingThis ? (
                       <>
-                        <Square className="w-3 h-3 text-amber-400" />
-                        <span>Stop</span>
+                        <Square className="w-3.5 h-3.5 text-amber-400" />
+                        <span className="flex items-center gap-1 font-semibold">
+                          <span>Playing</span>
+                          <span className="flex items-end gap-0.5 h-3 ml-1">
+                            <span className="w-0.5 h-3 bg-amber-400 animate-pulse" />
+                            <span className="w-0.5 h-1.5 bg-amber-400 animate-ping" />
+                            <span className="w-0.5 h-2.5 bg-amber-400 animate-pulse" />
+                          </span>
+                        </span>
                       </>
                     ) : (
                       <>
-                        <Play className="w-3 h-3 text-emerald-400" />
+                        <Play className="w-3.5 h-3.5 text-emerald-400" />
                         <span>Preview Tone</span>
                       </>
                     )}
