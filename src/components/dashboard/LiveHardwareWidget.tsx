@@ -66,9 +66,6 @@ export function LiveHardwareWidget() {
           <div>
             <h3 className="text-sm font-semibold text-slate-100 tracking-tight flex items-center gap-2">
               Arduino Desk Hub
-              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">
-                ESP32-S3 / Uno R4
-              </span>
             </h3>
 
             {/* Smart Connection Status: Physical vs Simulated */}
@@ -232,14 +229,14 @@ export function LiveHardwareWidget() {
 
         {/* OLED Ticker Display & Audio Status (7 Cols) */}
         <div className="md:col-span-7 flex flex-col justify-between gap-3">
-          {/* Simulated SSD1306 0.96" OLED Display */}
+          {/* Simulated OLED Ticker Display */}
           <div className="rounded-2xl border border-sky-900/60 bg-slate-950 p-3.5 shadow-inner relative overflow-hidden font-mono flex-1 flex flex-col justify-between">
             <div className="flex items-center justify-between text-[10px] text-sky-400/80 border-b border-sky-900/40 pb-2 mb-2">
               <span className="flex items-center gap-1.5 font-medium">
                 <span className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse" />
-                SSD1306 128x64 OLED
+                Physical Screen Feed
               </span>
-              <span className="text-sky-500 font-mono">I2C 0x3C</span>
+              <span className="text-sky-500 font-mono">Live Display</span>
             </div>
 
             {/* OLED Ticker Content */}

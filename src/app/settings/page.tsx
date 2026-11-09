@@ -139,12 +139,9 @@ export default function SettingsPage() {
             <h1 className="text-2xl font-bold text-slate-100 tracking-tight">
               Device & Hardware Settings
             </h1>
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-              Firmware Synced
-            </span>
           </div>
           <p className="text-sm text-slate-400 mt-1">
-            Configure sitting intervals, acoustic alert tones, hardware connection mode, and SSD1306 OLED ticker.
+            Configure sitting intervals, acoustic alert tones, hardware connection mode, and display ticker.
           </p>
         </div>
 
@@ -658,10 +655,10 @@ export default function SettingsPage() {
           <div>
             <h2 className="text-lg font-bold text-slate-100 tracking-tight flex items-center gap-2">
               <Radio className="w-5 h-5 text-emerald-400" />
-              Hardware Pairing & IR Remote Command Mapping
+              Hardware Pairing & Remote Shortcuts
             </h2>
             <p className="text-xs text-slate-400 mt-0.5">
-              Physical microcontroller connection status and hex signal lookup table for TSOP4838 IR receiver.
+              Microcontroller connection status and active wireless remote shortcuts.
             </p>
           </div>
 
@@ -686,18 +683,18 @@ export default function SettingsPage() {
           <table className="w-full text-left text-xs">
             <thead>
               <tr className="border-b border-calm-border/60 text-slate-400 font-mono text-[11px]">
-                <th className="pb-3 font-medium">IR HEX CODE</th>
-                <th className="pb-3 font-medium">COMMAND IDENTIFIER</th>
-                <th className="pb-3 font-medium">BEHAVIORAL ACTION</th>
+                <th className="pb-3 font-medium">ACTION</th>
+                <th className="pb-3 font-medium">TRIGGER</th>
+                
                 <th className="pb-3 font-medium text-right">STATUS</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800 font-mono text-[11px]">
               {irMappings.map((mapping) => (
                 <tr key={mapping.code} className="hover:bg-slate-900/40">
-                  <td className="py-2.5 font-bold text-sky-400">{mapping.code}</td>
-                  <td className="py-2.5 text-slate-300">{mapping.command}</td>
-                  <td className="py-2.5 text-slate-400 font-sans text-xs">{mapping.label}</td>
+                  <td className="py-2.5 text-slate-200 font-sans text-xs font-medium">{mapping.label}</td>
+                  <td className="py-2.5 text-slate-400 font-mono text-[11px]">{mapping.command.replace("IR_CMD_", "")}</td>
+                  
                   <td className="py-2.5 text-right">
                     <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                       PAIRED & ACTIVE
@@ -716,7 +713,7 @@ export default function SettingsPage() {
           <div>
             <h2 className="text-lg font-bold text-slate-100 tracking-tight flex items-center gap-2">
               <Tv className="w-5 h-5 text-sky-400" />
-              SSD1306 OLED Ticker Text Customization
+              OLED Ticker Text Customization
             </h2>
             <p className="text-xs text-slate-400 mt-0.5">
               Custom scroll text rendered across the 128x64 display during FOCUS mode.

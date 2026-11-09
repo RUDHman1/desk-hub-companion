@@ -69,9 +69,6 @@ export function Navbar() {
       {/* Upper Portal Switcher Ribbon */}
       <div className="bg-slate-950/80 border-b border-calm-border/40 px-4 sm:px-6 lg:px-8 py-1.5 flex items-center justify-between text-xs">
         <div className="flex items-center gap-2">
-          <span className="text-[10px] uppercase font-mono tracking-wider text-slate-500">
-            PORTAL:
-          </span>
           <div className="flex items-center gap-1 bg-slate-900/90 p-0.5 rounded-lg border border-calm-border/60">
             <Link
               href="/dashboard"
@@ -104,24 +101,18 @@ export function Navbar() {
           </div>
         </div>
 
-        {/* Live System Cues */}
-        <div className="hidden sm:flex items-center gap-3 text-[11px] text-slate-400 font-mono">
-          <span className="flex items-center gap-1.5">
-            <span
-              className={`w-1.5 h-1.5 rounded-full ${
-                !devicePoweredOn
-                  ? 'bg-slate-500'
-                  : currentMode === 'ALERT'
-                  ? 'bg-red-400 animate-ping'
-                  : 'bg-emerald-400 animate-pulse'
-              }`}
-            />
-            {devicePoweredOn ? `HUB ${currentMode}` : 'HUB OFF'}
-          </span>
-          <span className="text-slate-700">|</span>
-          <span className="text-slate-400">
-            Dept: <span className="text-slate-300">{user.department?.split(' ')[0] || 'General'}</span>
-          </span>
+        {/* Live System Status — minimal dot only */}
+        <div className="hidden sm:flex items-center gap-2 text-[11px] text-slate-400 font-mono">
+          <span
+            className={`w-1.5 h-1.5 rounded-full ${
+              !devicePoweredOn
+                ? 'bg-slate-500'
+                : currentMode === 'ALERT'
+                ? 'bg-red-400 animate-ping'
+                : 'bg-emerald-400 animate-pulse'
+            }`}
+          />
+          <span>{devicePoweredOn ? `HUB ${currentMode}` : 'HUB OFF'}</span>
         </div>
       </div>
 
@@ -158,13 +149,13 @@ export function Navbar() {
                   />
                 )}
               </div>
-              <div className="flex flex-col">
-                <div className="flex items-center gap-1.5">
+              <div className="flex flex-col min-w-0">
+                <div className="flex items-center gap-1.5 flex-nowrap whitespace-nowrap">
                   <span className="font-semibold text-slate-100 text-sm tracking-tight">
                     {isInAdminPortal ? 'HR & Wellness Hub' : 'Desk Hub Companion'}
                   </span>
                   <span
-                    className={`text-[9px] font-mono uppercase px-1.5 py-0.5 rounded border ${
+                    className={`hidden sm:inline text-[9px] font-mono uppercase px-1.5 py-0.5 rounded border ${
                       isInAdminPortal
                         ? 'bg-purple-500/20 text-purple-300 border-purple-500/30'
                         : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
@@ -173,11 +164,6 @@ export function Navbar() {
                     {isInAdminPortal ? 'Admin' : 'v2.4 IoT'}
                   </span>
                 </div>
-                <span className="text-[10px] text-slate-400 font-mono">
-                  {isInAdminPortal
-                    ? 'Occupational Oversight'
-                    : `${devicePoweredOn ? currentMode : 'OFF'} • ${connectionStatus.toUpperCase()}`}
-                </span>
               </div>
             </Link>
           </div>
